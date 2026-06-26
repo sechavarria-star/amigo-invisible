@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amigo Invisible · HP</title>
+<style>
+  :root{
+    --hp-blue:#024AD8;
+    --hp-blue-dark:#0233a0;
+    --hp-orange:#FF5050;
+    --hp-storm:#568393;
+    --ink:#101828;
+    --muted:#667085;
+    --line:#e4e7ec;
+    --bg:#f4f6fb;
+    --card:#ffffff;
+    --ok:#12805c;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(2,74,216,.06);
+    --font:"HP Simplified","Helvetica Neue",Arial,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--font);
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--hp-blue)}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+
+  /* Header */
+  header.topbar{
+    background:var(--hp-blue);
+    color:#fff;
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:14px;height:64px}
+  .logo-badge{background:#fff;border-radius:10px;padding:6px;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+  .topbar img.logo{height:30px;display:block}
+  .topbar .title{font-weight:700;font-size:18px;letter-spacing:.2px}
+  .topbar .title small{display:block;font-weight:400;font-size:12px;opacity:.85;letter-spacing:.4px}
+  .stripe{height:6px;background:linear-gradient(90deg,var(--hp-blue) 0 33%,var(--hp-storm) 33% 66%,var(--hp-orange) 66% 100%)}
+
+  main{padding:34px 0 70px}
+  h1{font-size:30px;margin:0 0 6px;letter-spacing:-.4px}
+  h2{font-size:19px;margin:0 0 14px}
+  .lead{color:var(--muted);margin:0 0 26px;font-size:15px}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:24px;
+    margin-bottom:20px;
+  }
+  .card h2{display:flex;align-items:center;gap:10px}
+  .badge{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--hp-blue);color:#fff;font-size:14px;font-weight:700}
+
+  label{display:block;font-size:13px;font-weight:600;margin:0 0 6px;color:var(--ink)}
+  .hint{font-weight:400;color:var(--muted);font-size:12px}
+  input,select,textarea{
+    width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;
+    font-family:inherit;font-size:14px;color:var(--ink);background:#fff;transition:border-color .15s,box-shadow .15s;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--hp-blue);box-shadow:0 0 0 3px rgba(2,74,216,.12)}
+  textarea{resize:vertical;min-height:60px}
+  .grid{display:grid;gap:16px}
+  .grid.cols-2{grid-template-columns:1fr 1fr}
+  .grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+  .field{margin-bottom:16px}
+  .field:last-child{margin-bottom:0}
+
+  .btn{
+    appearance:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;font-size:14px;
+    padding:12px 20px;border-radius:10px;background:var(--hp-blue);color:#fff;transition:background .15s,transform .05s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn:hover{background:var(--hp-blue-dark)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff;color:var(--hp-blue);border:1px solid var(--hp-blue)}
+  .btn.ghost:hover{background:#eef3fe}
+  .btn.subtle{background:#eef1f6;color:var(--ink)}
+  .btn.subtle:hover{background:#e4e8f0}
+  .btn.orange{background:var(--hp-orange)}
+  .btn.orange:hover{filter:brightness(.94)}
+  .btn.sm{padding:8px 13px;font-size:13px}
+  .btn.full{width:100%;justify-content:center}
+  .btn[disabled]{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;gap:12px;flex-wrap:wrap}
+
+  /* Participants */
+  .person{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line)}
+  .person:last-child{border-bottom:none}
+  .person .pname{flex:1}
+  .person .pwish{flex:1.4}
+  .iconbtn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:8px;border-radius:8px;line-height:1}
+  .iconbtn:hover{background:#fbe9e9;color:var(--hp-orange)}
+  .avatar{width:34px;height:34px;border-radius:50%;background:var(--hp-storm);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;flex:0 0 auto;margin-top:4px}
+
+  .pill{display:inline-flex;align-items:center;gap:6px;background:#eef3fe;color:var(--hp-blue);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;margin:3px}
+  .pill button{background:none;border:none;color:var(--hp-blue);cursor:pointer;font-size:14px;line-height:1;padding:0}
+  .exclusion-list{margin-top:4px}
+
+  .muted{color:var(--muted)}
+  .center{text-align:center}
+  .sep{height:1px;background:var(--line);margin:20px 0}
+
+  .toast{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;
+    opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.2)
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* Result rows */
+  .result-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .result-row:last-child{border-bottom:none}
+  .result-row .rname{flex:1;font-weight:600}
+  .result-row .status{font-size:12px;color:var(--muted)}
+  .result-row .status.sent{color:var(--ok);font-weight:600}
+
+  /* Reveal */
+  .reveal-hero{
+    background:linear-gradient(135deg,var(--hp-blue),#0a63ff);
+    color:#fff;border-radius:var(--radius);padding:34px 26px;text-align:center;position:relative;overflow:hidden;
+  }
+  .reveal-hero .eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:2px;opacity:.85;margin-bottom:6px}
+  .reveal-hero .who{font-size:40px;font-weight:800;letter-spacing:-1px;margin:8px 0;color:#fff}
+  .reveal-hero .ribbon{position:absolute;inset:0;background:
+     repeating-linear-gradient(125deg,transparent 0 60px,rgba(255,255,255,.05) 60px 64px);pointer-events:none}
+  .gift-emoji{font-size:46px}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+  .info-item{background:#f7f9fd;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .info-item .k{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+  .info-item .v{font-size:16px;font-weight:600;margin-top:3px}
+  .wishbox{background:#fff7f7;border:1px solid #ffd9d9;border-radius:12px;padding:16px;margin-top:14px}
+  .wishbox .k{color:var(--hp-orange);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+
+  .reveal-card{filter:blur(9px);transition:filter .4s;user-select:none}
+  .reveal-card.shown{filter:none;user-select:auto}
+  .cover{
+    position:absolute;inset:0;background:rgba(244,246,251,.6);backdrop-filter:blur(2px);
+    display:grid;place-items:center;border-radius:var(--radius);z-index:5;
+  }
+  .reveal-stage{position:relative}
+
+  footer{padding:24px 0;text-align:center;color:var(--muted);font-size:12px}
+  footer img{height:18px;vertical-align:middle;opacity:.7;margin-left:6px}
+
+  @media (max-width:640px){
+    .grid.cols-2,.grid.cols-3{grid-template-columns:1fr}
+    .info-grid{grid-template-columns:1fr}
+    h1{font-size:24px}
+    .reveal-hero .who{font-size:32px}
+    .person{flex-wrap:wrap}
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <span class="logo-badge"><img class="logo" src="assets/hp-logo.png" alt="HP"></span>
+      <div class="title">Amigo Invisible<small>Organizador de sorteo · HP</small></div>
+    </div>
+  </header>
+  <div class="stripe"></div>
+
+  <main class="wrap" id="app"><!-- render target --></main>
+
+  <footer class="wrap">
+    Hecho con <span style="color:var(--hp-orange)">&hearts;</span> para el equipo
+    <img src="assets/hp-logo.png" alt="HP">
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   Amigo Invisible — app estática 100% en el navegador.
+   El sorteo se calcula localmente y cada asignación viaja
+   cifrada (XOR + base64) dentro del link de cada participante.
+   No hay backend, ni emails, ni cuentas.
+   ============================================================ */
+
+/* ---------- utilidades de codificación de links ---------- */
+const XKEY = "HP-amigo-invisible-2025"; // ofusca el payload para que el organizador no lo lea de un vistazo
+function xorStr(s){
+  let out="";
+  for(let i=0;i<s.length;i++) out+=String.fromCharCode(s.charCodeAt(i) ^ XKEY.charCodeAt(i % XKEY.length));
+  return out;
+}
+function b64encodeUtf8(str){ return btoa(unescape(encodeURIComponent(str))); }
+function b64decodeUtf8(b64){ return decodeURIComponent(escape(atob(b64))); }
+function encodePayload(obj){
+  const json=JSON.stringify(obj);
+  const x=xorStr(json);
+  return b64encodeUtf8(x).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function decodePayload(token){
+  let b=token.replace(/-/g,'+').replace(/_/g,'/');
+  while(b.length%4) b+='=';
+  const x=b64decodeUtf8(b);
+  return JSON.parse(xorStr(x));
+}
+
+/* ---------- estado / persistencia ---------- */
+const LS_KEY="hp_amigo_invisible_v1";
+let state=load() || {
+  event:{name:"",date:"",place:"",bmin:"",bmax:"",currency:"€",theme:""},
+  people:[],                 // {id, name, wish}
+  exclusions:[],             // [idA, idB] (mutuas)
+  draw:null,                 // { byId:{giverId:receiverId}, at:ISO }
+};
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+function load(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)); }catch(e){ return null; } }
+function uid(){ return Math.random().toString(36).slice(2,9); }
+
+/* ---------- helpers UI ---------- */
+const $=(s,el=document)=>el.querySelector(s);
+const app=$("#app");
+function toast(msg){
+  const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2200);
+}
+function esc(s){ return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function initials(name){ return (name||"?").trim().split(/\s+/).slice(0,2).map(w=>w[0]||"").join("").toUpperCase(); }
+
+/* ============================================================
+   ALGORITMO DE SORTEO  (derangement con restricciones)
+   Backtracking aleatorizado: encuentra una asignación válida
+   donde nadie se saca a sí mismo ni a un excluido.
+   ============================================================ */
+function buildForbidden(){
+  const f={};
+  state.people.forEach(p=>{ f[p.id]=new Set([p.id]); }); // no a sí mismo
+  state.exclusions.forEach(([a,b])=>{ if(f[a])f[a].add(b); if(f[b])f[b].add(a); });
+  return f;
+}
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+  return arr;
+}
+function drawAssignments(){
+  const ids=state.people.map(p=>p.id);
+  const forbidden=buildForbidden();
+  const givers=shuffle([...ids]);
+  const assign={};
+  const available=new Set(ids);
+  function solve(i){
+    if(i===givers.length) return true;
+    const g=givers[i];
+    const cands=shuffle([...available].filter(r=>!forbidden[g].has(r)));
+    for(const r of cands){
+      assign[g]=r; available.delete(r);
+      if(solve(i+1)) return true;
+      available.add(r); delete assign[g];
+    }
+    return false;
+  }
+  return solve(0) ? assign : null;
+}
+
+/* ============================================================
+   VISTAS
+   ============================================================ */
+function render(){
+  const hash=location.hash;
+  if(hash.startsWith("#r=")){ renderReveal(hash.slice(3)); return; }
+  if(state.draw){ renderResults(); return; }
+  renderConfig();
+}
+
+/* ---------- 1. CONFIGURACIÓN + PARTICIPANTES ---------- */
+function renderConfig(){
+  const ev=state.event;
+  app.innerHTML=`
+    <h1>Organiza tu amigo invisible</h1>
+    <p class="lead">Define las reglas, agrega a los participantes y haz el sorteo. A cada persona le toca un
+      <strong>link secreto</strong> que puedes enviar por WhatsApp — solo quien lo abre ve a quién regala.</p>
+
+    <div class="card">
+      <h2><span class="badge">1</span> Reglas del juego</h2>
+      <div class="field">
+        <label>Nombre del evento</label>
+        <input id="ev-name" placeholder="Ej. Navidad HP 2025" value="${esc(ev.name)}">
+      </div>
+      <div class="grid cols-2">
+        <div class="field"><label>Fecha de entrega</label><input id="ev-date" type="date" value="${esc(ev.date)}"></div>
+        <div class="field"><label>Lugar</label><input id="ev-place" placeholder="Ej. Cena en la oficina" value="${esc(ev.place)}"></div>
+      </div>
+      <div class="grid cols-3">
+        <div class="field"><label>Presupuesto mín.</label><input id="ev-bmin" type="number" min="0" placeholder="20" value="${esc(ev.bmin)}"></div>
+        <div class="field"><label>Presupuesto máx.</label><input id="ev-bmax" type="number" min="0" placeholder="40" value="${esc(ev.bmax)}"></div>
+        <div class="field"><label>Moneda</label>
+          <select id="ev-cur">
+            ${["€","$","£","COP","MXN","ARS","CLP","S/."].map(c=>`<option ${ev.currency===c?"selected":""}>${c}</option>`).join("")}
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Temática <span class="hint">(opcional — graciosos, hechos a mano, ecológicos…)</span></label>
+        <input id="ev-theme" placeholder="Ej. Regalos graciosos" value="${esc(ev.theme)}">
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="badge">2</span> Participantes <span class="hint" style="font-weight:400">(${state.people.length})</span></h2>
+      <div id="people-list"></div>
+      <div class="sep"></div>
+      <div class="grid cols-2" style="align-items:end">
+        <div class="field" style="margin:0"><label>Nombre</label><input id="new-name" placeholder="Nombre del participante"></div>
+        <div class="field" style="margin:0"><label>Lista de deseos <span class="hint">(opcional)</span></label>
+          <input id="new-wish" placeholder="Lo que le gustaría recibir"></div>
+      </div>
+      <div style="margin-top:14px"><button class="btn ghost" id="add-person">＋ Agregar participante</button></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="badge">3</span> Exclusiones <span class="hint" style="font-weight:400">(opcional)</span></h2>
+      <p class="muted" style="margin:-6px 0 14px;font-size:13px">Evita que dos personas se toquen entre sí (ej. una pareja). La exclusión es mutua.</p>
+      <div class="grid cols-3" style="align-items:end">
+        <div class="field" style="margin:0"><label>Persona A</label><select id="exc-a"></select></div>
+        <div class="field" style="margin:0"><label>Persona B</label><select id="exc-b"></select></div>
+        <div class="field" style="margin:0"><button class="btn subtle full" id="add-exc">Excluir pareja</button></div>
+      </div>
+      <div class="exclusion-list" id="exc-list"></div>
+    </div>
+
+    <div class="btn-row" style="justify-content:space-between;align-items:center">
+      <button class="btn subtle sm" id="reset">Borrar todo</button>
+      <button class="btn orange" id="do-draw" style="font-size:16px;padding:14px 28px">🎁 Hacer el sorteo</button>
+    </div>
+  `;
+
+  // bind event fields
+  const bindEv=(id,key)=>{ const el=$("#"+id); el.addEventListener("input",()=>{ state.event[key]=el.value; save(); }); };
+  bindEv("ev-name","name");bindEv("ev-date","date");bindEv("ev-place","place");
+  bindEv("ev-bmin","bmin");bindEv("ev-bmax","bmax");bindEv("ev-theme","theme");
+  $("#ev-cur").addEventListener("change",e=>{ state.event.currency=e.target.value; save(); });
+
+  renderPeople(); renderExclusions(); refreshExcSelects();
+
+  $("#add-person").addEventListener("click",addPerson);
+  $("#new-name").addEventListener("keydown",e=>{ if(e.key==="Enter") addPerson(); });
+  $("#add-exc").addEventListener("click",addExclusion);
+  $("#do-draw").addEventListener("click",doDraw);
+  $("#reset").addEventListener("click",()=>{
+    if(confirm("¿Borrar el evento, participantes y sorteo?")){
+      localStorage.removeItem(LS_KEY); location.hash=""; location.reload();
+    }
+  });
+}
+
+function addPerson(){
+  const name=$("#new-name").value.trim();
+  if(!name){ toast("Escribe un nombre"); return; }
+  state.people.push({id:uid(),name,wish:$("#new-wish").value.trim()});
+  $("#new-name").value=""; $("#new-wish").value=""; $("#new-name").focus();
+  save(); renderPeople(); refreshExcSelects();
+  $("#people-list").closest(".card").querySelector("h2 .hint").textContent=`(${state.people.length})`;
+}
+
+function renderPeople(){
+  const list=$("#people-list"); if(!list) return;
+  if(!state.people.length){ list.innerHTML=`<p class="muted" style="font-size:13px;margin:4px 0">Aún no hay participantes.</p>`; return; }
+  list.innerHTML=state.people.map(p=>`
+    <div class="person" data-id="${p.id}">
+      <div class="avatar">${esc(initials(p.name))}</div>
+      <div class="pname">
+        <input value="${esc(p.name)}" data-k="name" placeholder="Nombre">
+      </div>
+      <div class="pwish">
+        <input value="${esc(p.wish||"")}" data-k="wish" placeholder="Lista de deseos (opcional)">
+      </div>
+      <button class="iconbtn" title="Eliminar" data-del>✕</button>
+    </div>`).join("");
+  list.querySelectorAll(".person").forEach(row=>{
+    const id=row.dataset.id;
+    row.querySelectorAll("input").forEach(inp=>inp.addEventListener("input",()=>{
+      const p=state.people.find(x=>x.id===id); p[inp.dataset.k]=inp.value; save();
+    }));
+    row.querySelector("[data-del]").addEventListener("click",()=>{
+      state.people=state.people.filter(x=>x.id!==id);
+      state.exclusions=state.exclusions.filter(([a,b])=>a!==id&&b!==id);
+      save(); renderPeople(); renderExclusions(); refreshExcSelects();
+      const h=$("#people-list").closest(".card").querySelector("h2 .hint"); if(h) h.textContent=`(${state.people.length})`;
+    });
+  });
+}
+
+function refreshExcSelects(){
+  const a=$("#exc-a"),b=$("#exc-b"); if(!a||!b) return;
+  const opts=state.people.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("");
+  a.innerHTML=opts; b.innerHTML=opts; if(state.people.length>1) b.selectedIndex=1;
+}
+function addExclusion(){
+  const a=$("#exc-a").value,b=$("#exc-b").value;
+  if(!a||!b||a===b){ toast("Elige dos personas distintas"); return; }
+  if(state.exclusions.some(([x,y])=>(x===a&&y===b)||(x===b&&y===a))){ toast("Esa exclusión ya existe"); return; }
+  state.exclusions.push([a,b]); save(); renderExclusions();
+}
+function renderExclusions(){
+  const el=$("#exc-list"); if(!el) return;
+  const nameOf=id=>esc((state.people.find(p=>p.id===id)||{}).name||"?");
+  el.innerHTML=state.exclusions.map(([a,b],i)=>`
+    <span class="pill">${nameOf(a)} ⇎ ${nameOf(b)} <button data-i="${i}">✕</button></span>`).join("")
+    || `<span class="muted" style="font-size:13px">Sin exclusiones.</span>`;
+  el.querySelectorAll("button[data-i]").forEach(btn=>btn.addEventListener("click",()=>{
+    state.exclusions.splice(+btn.dataset.i,1); save(); renderExclusions();
+  }));
+}
+
+/* ---------- 2. SORTEO ---------- */
+function doDraw(){
+  if(state.people.length<3){ toast("Necesitas al menos 3 participantes"); return; }
+  if(state.people.some(p=>!p.name.trim())){ toast("Hay participantes sin nombre"); return; }
+  const assign=drawAssignments();
+  if(!assign){
+    alert("No se pudo sortear con esas exclusiones — son demasiado restrictivas. Quita alguna exclusión e inténtalo otra vez.");
+    return;
+  }
+  state.draw={byId:assign,at:new Date().toISOString(),sent:{}};
+  save(); location.hash=""; renderResults();
+  toast("¡Sorteo realizado! 🎉");
+}
+
+/* ---------- 3. RESULTADOS / LINKS SECRETOS ---------- */
+function baseUrl(){ return location.origin+location.pathname; }
+function linkFor(person){
+  const recId=state.draw.byId[person.id];
+  const rec=state.people.find(p=>p.id===recId);
+  const ev=state.event;
+  const payload={
+    g:person.name,
+    r:rec.name,
+    w:rec.wish||"",
+    e:{n:ev.name,d:ev.date,p:ev.place,bmin:ev.bmin,bmax:ev.bmax,c:ev.currency,t:ev.theme}
+  };
+  return baseUrl()+"#r="+encodePayload(payload);
+}
+function waText(person){
+  const link=linkFor(person);
+  const ev=state.event;
+  return `🎁 ¡Hola ${person.name}! Te tocó participar en el amigo invisible${ev.name?` de *${ev.name}*`:""}.\n`
+    +`Abre tu link secreto para ver a quién regalas (solo tú lo verás):\n${link}`;
+}
+
+function renderResults(){
+  const d=state.draw;
+  app.innerHTML=`
+    <h1>Sorteo listo 🎉</h1>
+    <p class="lead">Envía a cada persona <strong>su</strong> link. Solo quien lo abre verá a quién le regala —
+      tú como organizador no ves las asignaciones.</p>
+
+    <div class="card">
+      <div class="grid cols-2">
+        <div><div class="info-item"><div class="k">Evento</div><div class="v">${esc(state.event.name)||"—"}</div></div></div>
+        <div><div class="info-item"><div class="k">Participantes</div><div class="v">${state.people.length}</div></div></div>
+      </div>
+      <p class="muted" style="font-size:12px;margin:14px 0 0">Sorteado el ${new Date(d.at).toLocaleString("es")}.</p>
+    </div>
+
+    <div class="card">
+      <h2>Links secretos</h2>
+      <div id="results"></div>
+      <div class="sep"></div>
+      <button class="btn ghost full" id="copy-all">📋 Copiar todos los links (lista)</button>
+    </div>
+
+    <div class="btn-row" style="justify-content:space-between">
+      <button class="btn subtle sm" id="back">← Editar participantes</button>
+      <button class="btn subtle sm" id="redraw">🔁 Volver a sortear</button>
+    </div>
+  `;
+  const cont=$("#results");
+  cont.innerHTML=state.people.map(p=>`
+    <div class="result-row" data-id="${p.id}">
+      <div class="avatar">${esc(initials(p.name))}</div>
+      <div class="rname">${esc(p.name)}<div class="status ${d.sent[p.id]?'sent':''}">${d.sent[p.id]?'✓ Marcado como enviado':'Pendiente de enviar'}</div></div>
+      <button class="btn sm subtle" data-copy>Copiar link</button>
+      <button class="btn sm" data-wa>WhatsApp</button>
+    </div>`).join("");
+
+  cont.querySelectorAll(".result-row").forEach(row=>{
+    const id=row.dataset.id; const person=state.people.find(p=>p.id===id);
+    row.querySelector("[data-copy]").addEventListener("click",async()=>{
+      await navigator.clipboard.writeText(linkFor(person));
+      markSent(id); toast("Link copiado");
+    });
+    row.querySelector("[data-wa]").addEventListener("click",()=>{
+      window.open("https://wa.me/?text="+encodeURIComponent(waText(person)),"_blank");
+      markSent(id);
+    });
+  });
+
+  $("#copy-all").addEventListener("click",async()=>{
+    const txt=state.people.map(p=>`${p.name}: ${linkFor(p)}`).join("\n");
+    await navigator.clipboard.writeText(txt); toast("Todos los links copiados");
+  });
+  $("#back").addEventListener("click",()=>{ state.draw=null; save(); renderConfig(); });
+  $("#redraw").addEventListener("click",()=>{
+    if(confirm("Esto genera nuevas asignaciones y anula los links ya enviados. ¿Continuar?")){
+      doDraw();
+    }
+  });
+}
+function markSent(id){
+  state.draw.sent[id]=true; save();
+  const row=document.querySelector(`.result-row[data-id="${id}"] .status`);
+  if(row){ row.textContent="✓ Marcado como enviado"; row.classList.add("sent"); }
+}
+
+/* ---------- 4. VISTA DE REVELACIÓN (link secreto) ---------- */
+function renderReveal(token){
+  let data;
+  try{ data=decodePayload(token); }catch(e){ data=null; }
+  if(!data||!data.g||!data.r){
+    app.innerHTML=`<div class="card center"><h1>Link no válido</h1>
+      <p class="lead">Este enlace está incompleto o dañado. Pídele a tu organizador que te reenvíe tu link secreto.</p></div>`;
+    return;
+  }
+  const e=data.e||{};
+  const budget=(e.bmin||e.bmax)?`${e.bmin?e.c+" "+e.bmin:""}${e.bmin&&e.bmax?" – ":""}${e.bmax?e.c+" "+e.bmax:""}`:"—";
+  const dateStr=e.d?new Date(e.d+"T00:00").toLocaleDateString("es",{weekday:"long",day:"numeric",month:"long",year:"numeric"}):"—";
+
+  app.innerHTML=`
+    <div class="reveal-stage">
+      <div class="card reveal-card" id="reveal-card">
+        <div class="reveal-hero">
+          <div class="ribbon"></div>
+          <div class="eyebrow">${esc(e.n||"Amigo invisible")}</div>
+          <div class="gift-emoji">🎁</div>
+          <div>Hola <strong>${esc(data.g)}</strong>, le regalas a…</div>
+          <div class="who">${esc(data.r)}</div>
+        </div>
+        <div class="info-grid">
+          <div class="info-item"><div class="k">Presupuesto</div><div class="v">${esc(budget)}</div></div>
+          <div class="info-item"><div class="k">Temática</div><div class="v">${esc(e.t||"Libre")}</div></div>
+          <div class="info-item"><div class="k">Fecha</div><div class="v" style="text-transform:capitalize">${esc(dateStr)}</div></div>
+          <div class="info-item"><div class="k">Lugar</div><div class="v">${esc(e.p||"—")}</div></div>
+        </div>
+        ${data.w?`<div class="wishbox"><div class="k">🎯 Lista de deseos de ${esc(data.r)}</div><div>${esc(data.w)}</div></div>`:""}
+        <p class="muted center" style="font-size:12px;margin:18px 0 0">🤫 ¡Mantén el secreto! No le digas a nadie a quién te tocó.</p>
+      </div>
+      <div class="cover" id="cover">
+        <div class="center">
+          <div class="gift-emoji" style="font-size:60px">🎁</div>
+          <h2 style="margin:14px 0 4px">Hola ${esc(data.g)}</h2>
+          <p class="muted" style="margin:0 0 18px">Pulsa para descubrir a quién regalas.<br><small>Asegúrate de que nadie mire 👀</small></p>
+          <button class="btn orange" id="reveal-btn" style="font-size:16px;padding:14px 30px">Descubrir 🎉</button>
+        </div>
+      </div>
+    </div>
+  `;
+  $("#reveal-btn").addEventListener("click",()=>{
+    $("#cover").style.display="none";
+    $("#reveal-card").classList.add("shown");
+  });
+}
+
+/* ---------- arranque ---------- */
+window.addEventListener("hashchange",render);
+render();
+</script>
+</body>
+</html>
