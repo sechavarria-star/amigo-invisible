@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flyer A · Azul protagonista</title>
+<style>
+  :root{--hp-blue:#024AD8;--hp-orange:#FF5050;--hp-storm:#568393;--ink:#101828;--font:"HP Simplified","Helvetica Neue",Arial,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  @page{size:A4;margin:0}
+  body{font-family:var(--font);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:210mm;height:297mm;background:var(--hp-blue);color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;padding:18mm 16mm}
+  .ribbon{position:absolute;inset:0;background:repeating-linear-gradient(125deg,transparent 0 80px,rgba(255,255,255,.045) 80px 86px);pointer-events:none}
+  .top{display:flex;align-items:center;gap:12px;z-index:2}
+  .badge{background:#fff;border-radius:12px;padding:8px}
+  .badge img{height:32px;display:block}
+  .kicker{font-size:13pt;letter-spacing:4px;text-transform:uppercase;opacity:.9;font-weight:600}
+  .hero{flex:1;display:flex;flex-direction:column;justify-content:center;z-index:2}
+  .gift{font-size:64pt;line-height:1}
+  h1{font-size:54pt;line-height:.98;font-weight:800;letter-spacing:-1.5px;margin:10px 0 14px}
+  h1 .o{color:#fff;-webkit-text-stroke:0}
+  .sub{font-size:18pt;font-weight:500;opacity:.95;max-width:150mm}
+  .card{background:#fff;color:var(--ink);border-radius:22px;padding:22px 26px;display:flex;gap:24px;align-items:center;z-index:2;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+  .qr{width:46mm;height:46mm;flex:0 0 auto}
+  .qr img{width:100%;height:100%;display:block}
+  .card .cta .big{font-size:22pt;font-weight:800;color:var(--hp-blue);line-height:1.05}
+  .card .cta .steps{margin-top:10px;font-size:12.5pt;color:#475467;line-height:1.7}
+  .card .cta .steps b{color:var(--hp-orange)}
+  .stripe{height:10px;display:flex;border-radius:6px;overflow:hidden;margin-top:18px;z-index:2}
+  .stripe i{flex:1}.s1{background:#fff;opacity:.25}.s2{background:var(--hp-storm)}.s3{background:var(--hp-orange)}
+  .foot{margin-top:14px;font-size:11.5pt;opacity:.9;z-index:2;display:flex;align-items:center;gap:8px}
+</style></head>
+<body>
+  <div class="page">
+    <div class="ribbon"></div>
+    <div class="top">
+      <span class="badge"><img src="hp-logo.png" alt="HP"></span>
+      <span class="kicker">Amigo Invisible · HP</span>
+    </div>
+    <div class="hero">
+      <div class="gift">🎁</div>
+      <h1>¡Sumate al<br>Amigo Invisible!</h1>
+      <div class="sub">Anotate en 30 segundos. Te asignamos a quién regalar y te llega tu amigo secreto directo por WhatsApp.</div>
+    </div>
+    <div class="card">
+      <div class="qr"><img src="qr_black.svg" alt="QR inscripción"></div>
+      <div class="cta">
+        <div class="big">Escaneá<br>para anotarte</div>
+        <div class="steps">
+          <b>1.</b> Apuntá la cámara al QR<br>
+          <b>2.</b> Completá nombre y celular<br>
+          <b>3.</b> ¡Listo, ya participás! 🎉
+        </div>
+      </div>
+    </div>
+    <div class="stripe"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div>
+    <div class="foot">🤫 Inscripción 100% online · El sorteo se hace una vez cerradas las inscripciones</div>
+  </div>
+</body></html>

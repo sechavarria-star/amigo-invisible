@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flyer C · Festivo</title>
+<style>
+  :root{--hp-blue:#024AD8;--hp-blue2:#0a63ff;--hp-orange:#FF5050;--hp-storm:#568393;--ink:#101828;--font:"HP Simplified","Helvetica Neue",Arial,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  @page{size:A4;margin:0}
+  body{font-family:var(--font);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:210mm;height:297mm;background:linear-gradient(160deg,var(--hp-blue) 0%,var(--hp-blue2) 60%,#0850e6 100%);color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:16mm 14mm;text-align:center}
+  .ribbon{position:absolute;inset:0;background:repeating-linear-gradient(125deg,transparent 0 70px,rgba(255,255,255,.05) 70px 75px)}
+  .blob{position:absolute;border-radius:50%;filter:blur(2px);opacity:.5}
+  .b-o{width:260px;height:260px;background:radial-gradient(circle,rgba(255,80,80,.55),transparent 70%);top:-60px;right:-60px}
+  .b-s{width:300px;height:300px;background:radial-gradient(circle,rgba(86,131,147,.5),transparent 70%);bottom:-80px;left:-80px}
+  .deco{position:absolute;font-size:38pt;opacity:.9}
+  .d1{top:30mm;left:18mm;transform:rotate(-15deg)}
+  .d2{top:24mm;right:20mm;transform:rotate(12deg)}
+  .d3{bottom:30mm;right:22mm;transform:rotate(-10deg)}
+  .top{display:flex;align-items:center;gap:10px;z-index:2;align-self:flex-start}
+  .badge{background:#fff;border-radius:11px;padding:7px}.badge img{height:28px;display:block}
+  .kicker{font-size:11pt;letter-spacing:4px;text-transform:uppercase;font-weight:700;opacity:.92}
+  .hero{z-index:2;margin-top:14mm}
+  .tease{font-size:20pt;font-weight:600;opacity:.95}
+  h1{font-size:62pt;line-height:.95;font-weight:800;letter-spacing:-2px;margin:6px 0 0;text-shadow:0 4px 20px rgba(0,0,0,.2)}
+  .secret{display:inline-block;margin-top:14px;background:var(--hp-orange);color:#fff;font-size:16pt;font-weight:800;padding:8px 22px;border-radius:999px;transform:rotate(-2deg)}
+  .qrcard{z-index:2;margin-top:auto;background:#fff;border-radius:26px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .qrcard img{width:60mm;height:60mm;display:block}
+  .qrcard .lbl{color:var(--hp-blue);font-weight:800;font-size:15pt;margin-top:10px}
+  .cta{z-index:2;margin-top:18px;font-size:19pt;font-weight:800}
+  .cta .arrow{font-size:24pt}
+  .foot{z-index:2;margin-top:auto;font-size:11pt;opacity:.92;padding-top:14px}
+</style></head>
+<body>
+  <div class="page">
+    <div class="ribbon"></div><div class="blob b-o"></div><div class="blob b-s"></div>
+    <div class="deco d1">🎄</div><div class="deco d2">✨</div><div class="deco d3">🎁</div>
+    <div class="top">
+      <span class="badge"><img src="hp-logo.png" alt="HP"></span>
+      <span class="kicker">Amigo Invisible · HP</span>
+    </div>
+    <div class="hero">
+      <div class="tease">¿Quién te va a tocar? 🤫</div>
+      <h1>AMIGO<br>INVISIBLE</h1>
+      <span class="secret">Anotate y descubrilo</span>
+    </div>
+    <div class="cta">Escaneá el QR <span class="arrow">↓</span></div>
+    <div class="qrcard">
+      <img src="qr_black.svg" alt="QR inscripción">
+      <div class="lbl">Inscribite acá</div>
+    </div>
+    <div class="foot">📲 Completás nombre y celular · Te llega tu amigo secreto por WhatsApp</div>
+  </div>
+</body></html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flyer B · Blanco limpio</title>
+<style>
+  :root{--hp-blue:#024AD8;--hp-orange:#FF5050;--hp-storm:#568393;--ink:#101828;--muted:#667085;--line:#e4e7ec;--font:"HP Simplified","Helvetica Neue",Arial,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  @page{size:A4;margin:0}
+  body{font-family:var(--font);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{width:210mm;height:297mm;background:#fff;color:var(--ink);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:0 18mm}
+  .topstripe{position:absolute;top:0;left:0;right:0;height:14px;display:flex}
+  .topstripe i{flex:1}.b1{background:var(--hp-blue)}.b2{background:var(--hp-storm)}.b3{background:var(--hp-orange)}
+  .head{margin-top:24mm;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+  .logo img{height:40px;display:block}
+  .kicker{font-size:12pt;letter-spacing:5px;text-transform:uppercase;color:var(--hp-storm);font-weight:700}
+  h1{font-size:46pt;line-height:1;font-weight:800;letter-spacing:-1.2px;color:var(--hp-blue);margin-top:4px}
+  h1 span{color:var(--ink)}
+  .sub{font-size:16pt;color:var(--muted);max-width:150mm;margin-top:14px;line-height:1.45}
+  .qrwrap{margin-top:auto;margin-bottom:auto;display:flex;flex-direction:column;align-items:center}
+  .qrcard{border:3px solid var(--hp-blue);border-radius:26px;padding:20px;background:#fff}
+  .qrcard img{width:66mm;height:66mm;display:block}
+  .pill{margin-top:20px;background:var(--hp-orange);color:#fff;font-size:17pt;font-weight:800;padding:12px 30px;border-radius:999px;display:inline-flex;gap:10px;align-items:center}
+  .steps{margin:26px 0 0;display:flex;gap:14px;width:100%;max-width:160mm}
+  .step{flex:1;text-align:center}
+  .step .n{width:40px;height:40px;border-radius:50%;background:#eef3fe;color:var(--hp-blue);font-weight:800;font-size:16pt;display:grid;place-items:center;margin:0 auto 8px}
+  .step .t{font-size:11.5pt;color:#475467;line-height:1.4}
+  .foot{margin-top:auto;margin-bottom:16mm;text-align:center;color:var(--muted);font-size:11pt}
+  .botstripe{position:absolute;bottom:0;left:0;right:0;height:10px;display:flex}
+  .botstripe i{flex:1}
+</style></head>
+<body>
+  <div class="page">
+    <div class="topstripe"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+    <div class="head">
+      <span class="logo"><img src="hp-logo.png" alt="HP"></span>
+      <div class="kicker">Amigo Invisible 2025</div>
+      <h1>Anotate y<br><span>regalá en secreto</span> 🎁</h1>
+      <div class="sub">Escaneá el código, dejá tus datos y participá. Te avisamos por WhatsApp a quién te toca.</div>
+    </div>
+
+    <div class="qrwrap">
+      <div class="qrcard"><img src="qr_blue.svg" alt="QR inscripción"></div>
+      <div class="pill">📲 Escaneá y participá</div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div class="t">Apuntá la cámara<br>al código QR</div></div>
+      <div class="step"><div class="n">2</div><div class="t">Completá nombre,<br>apellido y celular</div></div>
+      <div class="step"><div class="n">3</div><div class="t">¡Listo!<br>Ya estás dentro 🎉</div></div>
+    </div>
+
+    <div class="foot">🤫 Inscripción 100% online · El sorteo se realiza al cerrar las inscripciones</div>
+    <div class="botstripe"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+  </div>
+</body></html>
