@@ -254,6 +254,23 @@ function waUrl(person){
   const base=person.phone?("https://wa.me/"+person.phone):"https://wa.me/";
   return base+"?text="+encodeURIComponent(waText(person));
 }
+// Guarda un participante en el Google Sheet vía JSONP (sin CORS). Devuelve Promise<{ok,dup?}>
+function syncToSheet(obj){
+  return new Promise(resolve=>{
+    const cb="__add_"+Date.now()+Math.random().toString(36).slice(2,6);
+    const s=document.createElement("script");
+    const cleanup=()=>{ try{delete window[cb];}catch(e){} s.remove(); };
+    const timer=setTimeout(()=>{ cleanup(); resolve({ok:false,error:"timeout"}); },12000);
+    window[cb]=(res)=>{ clearTimeout(timer); cleanup(); resolve(res||{ok:false}); };
+    s.src=INSCRIPCION_URL+"?action=add"
+      +"&nombre="+encodeURIComponent(obj.nombre||"")
+      +"&apellido="+encodeURIComponent(obj.apellido||"")
+      +"&celular="+encodeURIComponent(obj.celular||"")
+      +"&callback="+cb+"&_="+Date.now();
+    s.onerror=()=>{ clearTimeout(timer); cleanup(); resolve({ok:false,error:"neterr"}); };
+    document.body.appendChild(s);
+  });
+}
 
 /* ---------- helpers UI ---------- */
 const $=(s,el=document)=>el.querySelector(s);
@@ -427,6 +444,12 @@ function addPerson(){
   $("#new-name").value=""; $("#new-last").value=""; $("#new-phone").value=""; $("#new-wish").value=""; $("#new-name").focus();
   save(); renderPeople(); refreshExcSelects();
   $("#people-list").closest(".card").querySelector("h2 .hint").textContent=`(${state.people.length})`;
+  // sincroniza al Google Sheet (registro único de todos los participantes)
+  syncToSheet({nombre:name,apellido:last,celular:phone}).then(res=>{
+    if(res&&res.ok) toast("Agregado y guardado en el Sheet ✓");
+    else if(res&&res.dup) toast("Agregado (ya estaba en el Sheet)");
+    else toast("Agregado localmente (no se pudo guardar en el Sheet)");
+  });
 }
 
 function renderPeople(){
