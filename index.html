@@ -105,6 +105,7 @@
   .pill button{background:none;border:none;color:var(--hp-blue);cursor:pointer;font-size:14px;line-height:1;padding:0}
   .exclusion-list{margin-top:4px}
 
+  .signup-box{background:#eef3fe;border:1px solid #d6e2fd;border-radius:12px;padding:14px 16px;margin-bottom:16px}
   .muted{color:var(--muted)}
   .center{text-align:center}
   .sep{height:1px;background:var(--line);margin:20px 0}
@@ -219,6 +220,41 @@ function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
 function load(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)); }catch(e){ return null; } }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 
+/* ---------- backend de inscripciones (Apps Script + Google Sheet) ---------- */
+const INSCRIPCION_URL="https://script.google.com/macros/s/AKfycbzA7Z_I51g3sYZOsKfl0kgH4auJdPbWKqHaCcFXmHMpab-dDzruiteZIXB572zXPvYU/exec";
+
+// Trae los inscriptos del Sheet vía JSONP (evita CORS desde GitHub Pages)
+function importInscriptos(btn){
+  const old=btn.textContent; btn.disabled=true; btn.textContent="Importando…";
+  const cb="__insc_"+Date.now();
+  const s=document.createElement("script");
+  const cleanup=()=>{ try{delete window[cb];}catch(e){} s.remove(); btn.disabled=false; btn.textContent=old; };
+  const timer=setTimeout(()=>{ cleanup(); toast("No respondió. ¿Ya autorizaste el script?"); },13000);
+  window[cb]=(res)=>{
+    clearTimeout(timer);
+    if(!res||!res.ok){ cleanup(); toast("Error al importar inscriptos"); return; }
+    let added=0;
+    (res.data||[]).forEach(r=>{
+      const name=((r.nombre||"")+" "+(r.apellido||"")).trim();
+      const phone=(r.celular||"").replace(/\D/g,"");
+      if(!name) return;
+      const dup=state.people.find(p=>(phone&&p.phone===phone)||p.name.toLowerCase()===name.toLowerCase());
+      if(dup){ if(phone&&!dup.phone){dup.phone=phone;added++;} return; }
+      state.people.push({id:uid(),name,wish:"",phone}); added++;
+    });
+    save(); cleanup(); renderConfig();
+    toast(added?`${added} inscripto(s) importado(s) ✓`:"Sin inscriptos nuevos");
+  };
+  s.src=INSCRIPCION_URL+"?action=list&callback="+cb+"&_="+Date.now();
+  s.onerror=()=>{ clearTimeout(timer); cleanup(); toast("No se pudo conectar al form de inscripción"); };
+  document.body.appendChild(s);
+}
+// wa.me directo al celular si lo tenemos; si no, abre WhatsApp para elegir contacto
+function waUrl(person){
+  const base=person.phone?("https://wa.me/"+person.phone):"https://wa.me/";
+  return base+"?text="+encodeURIComponent(waText(person));
+}
+
 /* ---------- helpers UI ---------- */
 const $=(s,el=document)=>el.querySelector(s);
 const app=$("#app");
@@ -309,6 +345,15 @@ function renderConfig(){
 
     <div class="card">
       <h2><span class="badge">2</span> Participantes <span class="hint" style="font-weight:400">(${state.people.length})</span></h2>
+      <div class="signup-box">
+        <strong>📲 Inscripción online</strong>
+        <div class="hint" style="margin:2px 0 0">Comparte este link para que se anoten solos (nombre, apellido y celular). Luego los importas con un clic.</div>
+        <div class="btn-row" style="margin-top:11px">
+          <button class="btn sm subtle" id="copy-insc">📋 Copiar link de inscripción</button>
+          <button class="btn sm subtle" id="wa-insc">Compartir por WhatsApp</button>
+          <button class="btn sm ghost" id="import-insc">⬇️ Importar inscriptos</button>
+        </div>
+      </div>
       <div id="people-list"></div>
       <div class="sep"></div>
       <div class="grid cols-2" style="align-items:end">
@@ -346,6 +391,9 @@ function renderConfig(){
 
   $("#add-person").addEventListener("click",addPerson);
   $("#new-name").addEventListener("keydown",e=>{ if(e.key==="Enter") addPerson(); });
+  $("#copy-insc").addEventListener("click",async()=>{ await navigator.clipboard.writeText(INSCRIPCION_URL); toast("Link de inscripción copiado"); });
+  $("#wa-insc").addEventListener("click",()=>{ window.open("https://wa.me/?text="+encodeURIComponent("🎁 ¡Anotate al amigo invisible! Dejá tus datos acá:\n"+INSCRIPCION_URL),"_blank"); });
+  $("#import-insc").addEventListener("click",e=>importInscriptos(e.currentTarget));
   $("#add-exc").addEventListener("click",addExclusion);
   $("#do-draw").addEventListener("click",doDraw);
   $("#reset").addEventListener("click",()=>{
@@ -372,6 +420,7 @@ function renderPeople(){
       <div class="avatar">${esc(initials(p.name))}</div>
       <div class="pname">
         <input value="${esc(p.name)}" data-k="name" placeholder="Nombre">
+        ${p.phone?`<div class="hint" style="margin-top:4px">📱 +${esc(p.phone)}</div>`:""}
       </div>
       <div class="pwish">
         <input value="${esc(p.wish||"")}" data-k="wish" placeholder="Lista de deseos (opcional)">
@@ -492,7 +541,7 @@ function renderResults(){
       markSent(id); toast("Link copiado");
     });
     row.querySelector("[data-wa]").addEventListener("click",()=>{
-      window.open("https://wa.me/?text="+encodeURIComponent(waText(person)),"_blank");
+      window.open(waUrl(person),"_blank");
       markSent(id);
     });
   });
