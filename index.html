@@ -357,7 +357,12 @@ function renderConfig(){
       <div id="people-list"></div>
       <div class="sep"></div>
       <div class="grid cols-2" style="align-items:end">
-        <div class="field" style="margin:0"><label>Nombre</label><input id="new-name" placeholder="Nombre del participante"></div>
+        <div class="field" style="margin:0"><label>Nombre</label><input id="new-name" placeholder="Ej. Ana"></div>
+        <div class="field" style="margin:0"><label>Apellido</label><input id="new-last" placeholder="Ej. Pérez"></div>
+      </div>
+      <div class="grid cols-2" style="align-items:end;margin-top:14px">
+        <div class="field" style="margin:0"><label>Celular <span class="hint">(con WhatsApp)</span></label>
+          <input id="new-phone" inputmode="tel" placeholder="+54 9 11 4175-8991"></div>
         <div class="field" style="margin:0"><label>Lista de deseos <span class="hint">(opcional)</span></label>
           <input id="new-wish" placeholder="Lo que le gustaría recibir"></div>
       </div>
@@ -390,7 +395,8 @@ function renderConfig(){
   renderPeople(); renderExclusions(); refreshExcSelects();
 
   $("#add-person").addEventListener("click",addPerson);
-  $("#new-name").addEventListener("keydown",e=>{ if(e.key==="Enter") addPerson(); });
+  ["new-name","new-last","new-phone","new-wish"].forEach(id=>
+    $("#"+id).addEventListener("keydown",e=>{ if(e.key==="Enter") addPerson(); }));
   $("#copy-insc").addEventListener("click",async()=>{ await navigator.clipboard.writeText(INSCRIPCION_URL); toast("Link de inscripción copiado"); });
   $("#wa-insc").addEventListener("click",()=>{ window.open("https://wa.me/?text="+encodeURIComponent("🎁 ¡Anotate al amigo invisible! Dejá tus datos acá:\n"+INSCRIPCION_URL),"_blank"); });
   $("#import-insc").addEventListener("click",e=>importInscriptos(e.currentTarget));
@@ -403,11 +409,22 @@ function renderConfig(){
   });
 }
 
+// Normaliza el celular a solo dígitos con prefijo 54 (igual que el backend del form).
+function normPhone(raw){
+  let d=String(raw||"").replace(/\D/g,"");
+  if(!d) return "";
+  if(d.indexOf("00")===0) d=d.slice(2);
+  if(d.indexOf("54")!==0) d="54"+d;
+  return d;
+}
 function addPerson(){
   const name=$("#new-name").value.trim();
+  const last=$("#new-last").value.trim();
   if(!name){ toast("Escribe un nombre"); return; }
-  state.people.push({id:uid(),name,wish:$("#new-wish").value.trim()});
-  $("#new-name").value=""; $("#new-wish").value=""; $("#new-name").focus();
+  const full=(name+" "+last).trim();
+  const phone=normPhone($("#new-phone").value);
+  state.people.push({id:uid(),name:full,wish:$("#new-wish").value.trim(),phone});
+  $("#new-name").value=""; $("#new-last").value=""; $("#new-phone").value=""; $("#new-wish").value=""; $("#new-name").focus();
   save(); renderPeople(); refreshExcSelects();
   $("#people-list").closest(".card").querySelector("h2 .hint").textContent=`(${state.people.length})`;
 }
