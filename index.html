@@ -238,9 +238,10 @@ function importInscriptos(btn){
       const name=((r.nombre||"")+" "+(r.apellido||"")).trim();
       const phone=(r.celular||"").replace(/\D/g,"");
       if(!name) return;
+      const ideas=(r.ideas||"").trim();
       const dup=state.people.find(p=>(phone&&p.phone===phone)||p.name.toLowerCase()===name.toLowerCase());
-      if(dup){ if(phone&&!dup.phone){dup.phone=phone;added++;} return; }
-      state.people.push({id:uid(),name,wish:"",phone}); added++;
+      if(dup){ let ch=false; if(phone&&!dup.phone){dup.phone=phone;ch=true;} if(ideas&&!dup.wish){dup.wish=ideas;ch=true;} if(ch)added++; return; }
+      state.people.push({id:uid(),name,wish:ideas,phone}); added++;
     });
     save(); cleanup(); renderConfig();
     toast(added?`${added} inscripto(s) importado(s) ✓`:"Sin inscriptos nuevos");
@@ -266,6 +267,7 @@ function syncToSheet(obj){
       +"&nombre="+encodeURIComponent(obj.nombre||"")
       +"&apellido="+encodeURIComponent(obj.apellido||"")
       +"&celular="+encodeURIComponent(obj.celular||"")
+      +"&ideas="+encodeURIComponent(obj.ideas||"")
       +"&callback="+cb+"&_="+Date.now();
     s.onerror=()=>{ clearTimeout(timer); cleanup(); resolve({ok:false,error:"neterr"}); };
     document.body.appendChild(s);
@@ -445,7 +447,7 @@ function addPerson(){
   save(); renderPeople(); refreshExcSelects();
   $("#people-list").closest(".card").querySelector("h2 .hint").textContent=`(${state.people.length})`;
   // sincroniza al Google Sheet (registro único de todos los participantes)
-  syncToSheet({nombre:name,apellido:last,celular:phone}).then(res=>{
+  syncToSheet({nombre:name,apellido:last,celular:phone,ideas:state.people[state.people.length-1].wish}).then(res=>{
     if(res&&res.ok) toast("Agregado y guardado en el Sheet ✓");
     else if(res&&res.dup) toast("Agregado (ya estaba en el Sheet)");
     else toast("Agregado localmente (no se pudo guardar en el Sheet)");
