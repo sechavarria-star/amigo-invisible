@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bíptico · Exterior</title>
+<style>
+  :root{--hp-blue:#024AD8;--hp-blue2:#0a63ff;--hp-orange:#FF5050;--hp-storm:#568393;--ink:#101828;--muted:#667085;--font:"HP Simplified","Helvetica Neue",Arial,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  @page{size:A4 landscape;margin:0}
+  body{font-family:var(--font);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet{width:297mm;height:210mm;display:flex;position:relative;overflow:hidden}
+  .fold{position:absolute;top:0;bottom:0;left:50%;width:0;border-left:1px dashed rgba(0,0,0,.18);z-index:5}
+  .panel{width:148.5mm;height:210mm;position:relative;overflow:hidden;display:flex;flex-direction:column}
+
+  /* ---------- CONTRATAPA (izquierda) ---------- */
+  .back{background:#f4f6fb;color:var(--ink);padding:16mm 14mm;align-items:center;text-align:center}
+  .back .logo img{height:34px;margin-top:4mm}
+  .back h3{font-size:17pt;font-weight:800;color:var(--hp-blue);margin-top:12mm;line-height:1.2}
+  .back .lead{font-size:11pt;color:var(--muted);margin-top:6px;max-width:110mm;line-height:1.5}
+  .mini{margin-top:12mm;display:flex;flex-direction:column;gap:9px;width:100%;max-width:112mm}
+  .mini .row{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #e4e7ec;border-radius:12px;padding:10px 13px;text-align:left}
+  .mini .e{font-size:17pt;flex:0 0 auto}
+  .mini .tx{font-size:10.5pt;line-height:1.3}
+  .mini .tx b{color:var(--hp-blue)}
+  .back .foot{margin-top:auto;font-size:9.5pt;color:var(--muted)}
+  .back .stripe{height:8px;width:100%;display:flex;border-radius:5px;overflow:hidden;margin-bottom:10px}
+  .back .stripe i{flex:1}.s1{background:var(--hp-blue)}.s2{background:var(--hp-storm)}.s3{background:var(--hp-orange)}
+
+  /* ---------- PORTADA (derecha) ---------- */
+  .cover{background:var(--hp-blue);color:#fff;padding:18mm 15mm;align-items:center;text-align:center}
+  .cover .ribbon{position:absolute;inset:0;background:repeating-linear-gradient(125deg,transparent 0 70px,rgba(255,255,255,.05) 70px 75px)}
+  .cover .top{z-index:2;display:flex;align-items:center;gap:10px}
+  .badge{background:#fff;border-radius:11px;padding:7px}.badge img{height:26px;display:block}
+  .kick{font-size:10.5pt;letter-spacing:3px;text-transform:uppercase;font-weight:700;opacity:.9}
+  .cover .mid{z-index:2;margin-top:auto}
+  .cover .gift{font-size:52pt;line-height:1}
+  .cover h1{font-size:40pt;font-weight:800;letter-spacing:-1.5px;line-height:.98;margin-top:6px}
+  .cover .sub{font-size:13pt;opacity:.95;margin-top:12px;max-width:110mm;line-height:1.4}
+  .cover .qrcard{z-index:2;margin-top:auto;background:#fff;border-radius:18px;padding:14px 14px 10px;box-shadow:0 16px 40px rgba(0,0,0,.25)}
+  .cover .qrcard img{width:38mm;height:38mm;display:block}
+  .cover .qrcard .lbl{color:var(--hp-blue);font-weight:800;font-size:11pt;margin-top:6px}
+</style></head>
+<body>
+  <div class="sheet">
+    <div class="fold"></div>
+
+    <!-- CONTRATAPA -->
+    <div class="panel back">
+      <span class="logo"><img src="hp-logo.png" alt="HP"></span>
+      <h3>El intercambio de<br>regalos secreto 🎄</h3>
+      <div class="lead">Una tradición para compartir en equipo: te toca regalar a alguien… ¡y alguien te regala a vos, en secreto!</div>
+      <div class="mini">
+        <div class="row"><span class="e">📲</span><span class="tx"><b>1.</b> Escaneás el QR y te anotás</span></div>
+        <div class="row"><span class="e">🎲</span><span class="tx"><b>2.</b> El sistema te asigna tu amigo invisible</span></div>
+        <div class="row"><span class="e">🤫</span><span class="tx"><b>3.</b> Regalás en secreto y dejás pistas</span></div>
+        <div class="row"><span class="e">🎉</span><span class="tx"><b>4.</b> Se revela quién fue quién</span></div>
+      </div>
+      <div class="foot">
+        <div class="stripe"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div>
+        Hecho con ♥ para el equipo · HP
+      </div>
+    </div>
+
+    <!-- PORTADA -->
+    <div class="panel cover">
+      <div class="ribbon"></div>
+      <div class="top">
+        <span class="badge"><img src="hp-logo.png" alt="HP"></span>
+        <span class="kick">Guía del juego</span>
+      </div>
+      <div class="mid">
+        <div class="gift">🎁</div>
+        <h1>Amigo<br>Invisible</h1>
+        <div class="sub">Todo lo que necesitás saber para jugar</div>
+      </div>
+      <div class="qrcard">
+        <img src="qr_black.svg" alt="QR inscripción">
+        <div class="lbl">Escaneá y anotate</div>
+      </div>
+    </div>
+
+  </div>
+</body></html>

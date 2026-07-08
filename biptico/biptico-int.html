@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bíptico · Interior</title>
+<style>
+  :root{--hp-blue:#024AD8;--hp-orange:#FF5050;--hp-storm:#568393;--ink:#101828;--muted:#667085;--line:#e4e7ec;--font:"HP Simplified","Helvetica Neue",Arial,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  @page{size:A4 landscape;margin:0}
+  body{font-family:var(--font);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet{width:297mm;height:210mm;display:flex;position:relative;overflow:hidden;background:#fff}
+  .fold{position:absolute;top:0;bottom:0;left:50%;width:0;border-left:1px dashed rgba(0,0,0,.15);z-index:5}
+  .panel{width:148.5mm;height:210mm;position:relative;overflow:hidden;display:flex;flex-direction:column;padding:15mm 13mm}
+  .topstripe{position:absolute;top:0;left:0;right:0;height:9px;display:flex}
+  .topstripe i{flex:1}.s1{background:var(--hp-blue)}.s2{background:var(--hp-storm)}.s3{background:var(--hp-orange)}
+
+  .htitle{display:flex;align-items:baseline;gap:8px;margin-bottom:4mm}
+  .htitle .k{font-size:11pt;letter-spacing:2px;text-transform:uppercase;color:var(--hp-storm);font-weight:700}
+  h2{font-size:23pt;font-weight:800;color:var(--hp-blue);letter-spacing:-.5px;line-height:1;margin-bottom:8mm}
+
+  .step{display:flex;gap:13px;margin-bottom:9mm}
+  .step:last-child{margin-bottom:0}
+  .num{flex:0 0 auto;width:36px;height:36px;border-radius:11px;background:var(--hp-blue);color:#fff;font-weight:800;font-size:16pt;display:grid;place-items:center}
+  .step.alt .num{background:var(--hp-orange)}
+  .step .body .t{font-size:14pt;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:7px;line-height:1.1}
+  .step .body .d{font-size:11pt;color:#475467;line-height:1.5;margin-top:5px}
+  .step .body .d b{color:var(--hp-blue)}
+
+  .tip{margin-top:auto;background:#eef3fe;border:1px solid #d6e2fd;border-radius:13px;padding:12px 14px;font-size:10.5pt;color:#334155;line-height:1.45}
+  .tip b{color:var(--hp-blue)}
+  .tipwarn{background:#fff7f7;border-color:#ffd9d9}
+  .tipwarn b{color:var(--hp-orange)}
+</style></head>
+<body>
+  <div class="sheet">
+    <div class="topstripe"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div>
+    <div class="fold"></div>
+
+    <!-- INTERIOR IZQUIERDA -->
+    <div class="panel">
+      <div class="htitle"><span class="k">Instrucciones</span></div>
+      <h2>Cómo se juega</h2>
+
+      <div class="step">
+        <div class="num">1</div>
+        <div class="body">
+          <div class="t">📋 Las reglas</div>
+          <div class="d">Entre todos acordamos el <b>presupuesto</b> (un mínimo y un máximo), la <b>temática</b> del regalo si la hay (graciosos, hechos a mano, etc.) y la <b>fecha y el lugar</b> del intercambio.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">2</div>
+        <div class="body">
+          <div class="t">🎲 El sorteo</div>
+          <div class="d">Escaneás el QR y dejás tus datos. El sistema asigna a cada persona su amigo invisible <b>al azar</b> —nadie se saca a sí mismo— y te avisa <b>por WhatsApp</b> a quién te toca regalar. ¡Solo vos lo ves!</div>
+        </div>
+      </div>
+
+      <div class="tip"><b>💡 Tip:</b> al anotarte podés dejar tus <b>ideas de regalo</b>. Así tu amigo invisible la tiene más fácil para acertar.</div>
+    </div>
+
+    <!-- INTERIOR DERECHA -->
+    <div class="panel">
+      <div class="htitle"><span class="k">Instrucciones</span></div>
+      <h2>La parte divertida</h2>
+
+      <div class="step alt">
+        <div class="num">3</div>
+        <div class="body">
+          <div class="t">🤫 El secreto y las pistas</div>
+          <div class="d">En los días previos podés mandar <b>mensajes anónimos</b>, pistas misteriosas o pequeños detalles (un dulce, una nota) para que tu regalado intente adivinar quién sos… <b>sin delatarte</b>.</div>
+        </div>
+      </div>
+
+      <div class="step alt">
+        <div class="num">4</div>
+        <div class="body">
+          <div class="t">🎉 La revelación</div>
+          <div class="d">El día del intercambio juntamos todos los regalos. Por turnos, cada uno <b>abre el suyo</b> e intenta adivinar quién fue su amigo invisible… antes de que esa persona confiese su identidad.</div>
+        </div>
+      </div>
+
+      <div class="tip tipwarn"><b>🎁 Recordá:</b> mantené el secreto hasta el final. ¡La gracia está en la sorpresa!</div>
+    </div>
+
+  </div>
+</body></html>
